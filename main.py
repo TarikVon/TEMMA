@@ -33,18 +33,20 @@ if __name__ == '__main__':
     nbatch = 2
     seq_len = 10
 
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
     opts.modal_num = 1
     opts.mask_a_length = '50'
     opts.mask_b_length = '10'
-    x0 = torch.rand(nbatch, seq_len, opts.d_model * opts.modal_num)
-    te = TE(opts, opts.d_model * opts.modal_num)
+    x0 = torch.rand(nbatch, seq_len, opts.d_model * opts.modal_num).to(device)
+    te = TE(opts, opts.d_model * opts.modal_num).to(device)
     output = te(x0)
     print(output.shape)
 
     opts.modal_num = 2
     opts.mask_a_length = '50,50'
     opts.mask_b_length = '10,10'
-    x1 = torch.rand(nbatch, seq_len, opts.d_model * opts.modal_num)
-    temma = TEMMA(opts, opts.d_model * opts.modal_num)
+    x1 = torch.rand(nbatch, seq_len, opts.d_model * opts.modal_num).to(device)
+    temma = TEMMA(opts, opts.d_model * opts.modal_num).to(device)
     output = temma(x1)
     print(output.shape)
